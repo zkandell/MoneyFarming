@@ -27,7 +27,7 @@ class Producer {
         // basecost is teh cost of the first producer and is used to calculate later ones
         this.baseCost = baseCost
         this.cost = this.baseCost
-        // Scale is how quickly it will go up in price (scale raised to the power of quantity)
+        // Scale is how quickly it will go up in price (scale plus one raised to the power of quantity)
         this.scale = scale
         // How much money it makes you per tick
         this.perTick = perTick
@@ -39,24 +39,39 @@ class Producer {
     
     UpdateInfo(){
         // Calculates how much the next producer will cost
-        this.cost = this.baseCost * (this.scale**this.quantity)
+        this.cost = this.baseCost * ((1 + this.scale)**this.quantity)
         // Updates the button with the new information
         document.getElementById(this.ID).innerHTML = this.ButtonLabel()
     }
 
 }
 
-moneyFlower = new Producer("Money Flower","MoneyFlower",0,10,2,1)
-moneyBush = new Producer("Money Bush", "MoneyBush",0,20,2,2)
-moneyTree = new Producer("Money Tree", "MoneyTree",0,40,2,4)
+class Upgrade {
+    /*
+    Upgrades are a one-time purchase which can only be unlocked after certain 
+    requirements are met. They tend to change deeper values or unlock new functionality. 
+    */
+
+    constructor(title,description,requirements,cost){
+        this.title = title
+        this.description = description
+        this.requirements = requirements
+        this.cost = cost
+    }
+
+}
+
+moneyFlower = new Producer("Money Flower","MoneyFlower",0,10,1,1)
+moneyBush = new Producer("Money Bush", "MoneyBush",0,20,1,2)
+moneyTree = new Producer("Money Tree", "MoneyTree",0,40,1,4)
 
 var producerList = [moneyFlower,moneyBush,moneyTree]
 
 function BuyProducer(producer) {
     // Only execute if you have enough money to buy
-    if (gameData.money >=producer.cost) {
+    if (gameData.money >= producer.cost) {
         // Subtract the money it costs and update that tag
-        gameData.money -=producer.cost
+        gameData.money -= producer.cost
         UpdateMoneyDisplay()
         // Add one to the count
         producer.quantity += 1
@@ -84,6 +99,10 @@ function RefreshInterface() {
         producer.UpdateInfo()
     }
 }
+
+/*function LowerMoneyTreeScale() {
+    moneyTree.scale *= 0.99
+}*/
 
 var mainGameLoop = window.setInterval(function() {
     PickMoney()
