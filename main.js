@@ -1,68 +1,91 @@
 var gameData = {
     money: 10,
-    moneyPerTick: 0,
-    moneyFlowers: 0,
-    moneyFlowerBaseCost: 10,
-    moneyFlowerScale: 2,
-    moneyFlowerCost: 10,
-    moneyBushes: 0,
-    moneyBushBaseCost: 20,
-    moneyBushScale: 2,
-    moneyBushCost: 20,
-    moneyTrees: 0,
-    moneyTreeBaseCost: 40,
-    moneyTreeScale: 2,
-    moneyTreeCost: 40
+    moneyID: "CurrentMoney",
+    moneyPerTick: function() {
+        perTick = 0
+        // Go through all the producers the player has
+        for(var i = 0; i < producerList.length ; i++) {
+            producer = producerList[i]
+            // Add each producer's contribution
+            perTick += producer.perTick * producer.quantity
+        }
+        return perTick
+    }
+}
+
+class Producer {
+    /* Producers, well, produce a certain amount of money per unit of time. 
+    I'm sure I'll need more lines of comments here eventually - but until then, this is empty-ish
+    */
+    constructor(name,ID,quantity,baseCost,scale,perTick){
+        // The name that will be shown to the user for this type of producer
+        this.name = name
+        // ID for the button to buy this producer
+        this.ID = ID
+        // However many of it you start with
+        this.quantity = quantity
+        // basecost is teh cost of the first producer and is used to calculate later ones
+        this.baseCost = baseCost
+        this.cost = this.baseCost
+        // Scale is how quickly it will go up in price (scale raised to the power of quantity)
+        this.scale = scale
+        // How much money it makes you per tick
+        this.perTick = perTick
+    }
+
+    ButtonLabel(){
+        return "Buy " + this.name + " (currently " + this.quantity + ") Cost: $" + this.cost
+    }
+    
+    UpdateInfo(){
+        // Calculates how much the next producer will cost
+        this.cost = this.baseCost * (this.scale**this.quantity)
+        // Updates the button with the new information
+        document.getElementById(this.ID).innerHTML = this.ButtonLabel()
+    }
+
+}
+
+moneyFlower = new Producer("Money Flower","MoneyFlower",0,10,2,1)
+moneyBush = new Producer("Money Bush", "MoneyBush",0,20,2,2)
+moneyTree = new Producer("Money Tree", "MoneyTree",0,40,2,4)
+
+var producerList = [moneyFlower,moneyBush,moneyTree]
+
+function BuyProducer(producer) {
+    // Only execute if you have enough money to buy
+    if (gameData.money >=producer.cost) {
+        // Subtract the money it costs and update that tag
+        gameData.money -=producer.cost
+        UpdateMoneyDisplay()
+        // Add one to the count
+        producer.quantity += 1
+        // Run through the usual updates
+        producer.UpdateInfo()
+    }
 }
 
 function PickMoney() {
-    gameData.money += gameData.moneyPerTick
-    document.getElementById("CurrentMoney").innerHTML = "$" + gameData.money
+    // Add money per tick to the current money
+    gameData.money += gameData.moneyPerTick()
+    UpdateMoneyDisplay()
 }
 
-function BuyMoneyFlower() {
-    if (gameData.money >= gameData.moneyFlowerCost) {
-        gameData.money -= gameData.moneyFlowerCost
-        gameData.moneyPerTick += 1
-        gameData.moneyFlowers +=1
-        gameData.moneyFlowerCost = gameData.moneyFlowerBaseCost * (gameData.moneyFlowerScale**gameData.moneyFlowers)
-        document.getElementById("CurrentMoney").innerHTML = "$" + gameData.money
-        document.getElementById("MoneyFlower").innerHTML = "Buy Money Flower (currently " + gameData.moneyFlowers + ") Cost: $" + gameData.moneyFlowerCost
-    }
+function UpdateMoneyDisplay() {
+    // Exactly what it says on the tin
+    document.getElementById(gameData.moneyID).innerHTML = "$" + gameData.money
 }
 
-function BuyMoneyBush() {
-    if (gameData.money >= gameData.moneyBushCost) {
-        gameData.money -= gameData.moneyBushCost
-        gameData.moneyPerTick += 2
-        gameData.moneyBushes +=1
-        gameData.moneyBushCost = gameData.moneyBushBaseCost * (gameData.moneyBushScale**gameData.moneyBushes)
-        document.getElementById("CurrentMoney").innerHTML = "$" + gameData.money
-        document.getElementById("MoneyBush").innerHTML = "Buy Money Bush (currently " + gameData.moneyBushes + ") Cost: $" + gameData.moneyBushCost
-    }
-}
-
-function BuyMoneyTree() {
-    if (gameData.money >= gameData.moneyTreeCost) {
-        gameData.money -= gameData.moneyTreeCost
-        gameData.moneyPerTick += 4
-        gameData.moneyTrees +=1
-        gameData.moneyTreeCost = gameData.moneyTreeBaseCost * (gameData.moneyTreeScale**gameData.moneyTrees)
-        document.getElementById("CurrentMoney").innerHTML = "$" + gameData.money
-        document.getElementById("MoneyTree").innerHTML = "Buy Money Tree (currently " + gameData.moneyTrees + ") Cost: $" + gameData.moneyTreeCost
-    }
-}
-
-function BuyMoneyPerClick() {
-    if (gameData.money >= gameData.moneyPerClickCost) {
-        gameData.money -= gameData.moneyPerClickCost
-        gameData.moneyPerTick += 1
-        gameData.moneyPerClickCost *= 2
-        document.getElementById("CurrentMoney").innerHTML = "$" + gameData.money
-        document.getElementById("perClickUpgrade").innerHTML = "Buy Money Tree (currently " + gameData.moneyPerTick + ") Cost: $" + gameData.moneyPerClickCost
+function RefreshInterface() {
+    UpdateMoneyDisplay()
+    // Updates all the buttons for producers
+    for(var i = 0; i < producerList.length ; i++) {
+        producer = producerList[i]
+        producer.UpdateInfo()
     }
 }
 
 var mainGameLoop = window.setInterval(function() {
     PickMoney()
+    RefreshInterface()
 }, 1000)
