@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Money Farming</title>
-    <script src ="main.js" charset="utf-8" type="text/javascript"></script>
 </head>
 <body>
     <p id ="CurrentMoney">$10</p>
     <button onclick="PickMoney()">Find Money</button><br>
-    <button onclick="BuyProducer(moneyFlower)" id="MoneyFlower">Buy Money Flower (currently 0) Cost: $10</button><br>
-    <button onclick="BuyProducer(moneyBush)" id="MoneyBush">Buy Money Bush (currently 0) Cost: $20</button><br>
-    <button onclick="BuyProducer(moneyTree)" id="MoneyTree">Buy Money Tree (currently 0) Cost: $40</button>
+    <h2>Producers</h2>
+    <button onclick="moneyFlower.Buy()" id="MoneyFlower">Buy Money Flower (currently 0) Cost: $10</button><br>
+    <button onclick="moneyBush.Buy()" id="MoneyBush">Buy Money Bush (currently 0) Cost: $20</button><br>
+    <button onclick="moneyTree.Buy()" id="MoneyTree">Buy Money Tree (currently 0) Cost: $40</button><br>
+    <h2>Upgrades</h2>
+    <button onclick="ughBees.Buy()" id="ughBees">Ugh, bees</button><br>
+    <button onclick="pruningShears.Buy()" id="pruningShears">Pruning Shears</button>
     <!--<button onclick="LowerMoneyTreeScale()" id="Test">Reduce Money Tree Scale</button>-->
+    <script src ="main.js" charset="utf-8" type="text/javascript"></script>
 </body>
 </html>
