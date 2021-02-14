@@ -1,6 +1,11 @@
 var gameData = {
+    // This is how much money you start with - this will change a lot later
     money: 10,
+    // String representation of the money
+    moneyString: '10',
+    // Identifies the element on the page that has the money information
     moneyID: "CurrentMoney",
+    // Every tick, you run through this function to get the amount of money produced per tick
     moneyPerTick: function() {
         perTick = 0
         // Go through all the producers the player has
@@ -74,7 +79,8 @@ class Upgrade {
         // Every upgrade shows a title and description
         this.title = title
         this.description = description
-        // What needs to be the case before you can purchase this upgrade
+        // A function that returns a boolean - if true, the upgrade can be unlocked
+        // This functionality still needs to be implemented
         this.requirement = requirement
         // How much it costs in $
         this.cost = cost
@@ -82,10 +88,6 @@ class Upgrade {
         this.effect = effect
         // Set a flag to show this hasn't been bought
         this.bought = false
-
-        // Set up the text
-        document.getElementById(this.ID).innerHTML = this.title
-        document.getElementById(this.ID).title = this.description
     }
 
     Buy() {
@@ -111,8 +113,9 @@ class Upgrade {
 moneyFlower = new Producer("Money Flower","MoneyFlower",0,10,1,1)
 moneyBush = new Producer("Money Bush", "MoneyBush",0,20,1,2,1)
 moneyTree = new Producer("Money Tree", "MoneyTree",0,40,1,4)
-ughBees = new Upgrade("ughBees","Ugh, bees","Makes Money Flowers 10% more effective",true,100,function(){moneyFlower.perTick*=1.1})
-pruningShears = new Upgrade("pruningShears","Pruning Shears","Makes Money Bushes 10% more effective",true,200,function(){moneyBush.perTick*=1.1})
+ughBees = new Upgrade("ughBees","Ugh, bees","Makes Money Flowers 10% more productive",true,100,function(){moneyFlower.perTick*=1.1})
+pruningShears = new Upgrade("pruningShears","Pruning Shears","Makes Money Bushes 10% more productive",true,200,function(){moneyBush.perTick*=1.1})
+huggingTrees = new Upgrade("huggingTrees","Hugging Trees","Makes Money Trees 10% more productive",true,400,function(){moneyTree.perTick*=1.1})
 
 var producerList = [moneyFlower,moneyBush,moneyTree]
 var upgradeList = [ughBees,pruningShears]
@@ -123,9 +126,17 @@ function PickMoney() {
     UpdateMoneyDisplay()
 }
 
+function FormatMoney(money) {
+    // Convert the current amount of money to a string rather than number
+    // This is kind of useless right now, but this function will change later
+    let moneyString = money.toFixed(2)
+    return moneyString
+}
+
 function UpdateMoneyDisplay() {
     // Exactly what it says on the tin
-    document.getElementById(gameData.moneyID).innerHTML = "$" + gameData.money
+    gameData.moneyString = FormatMoney(gameData.money)
+    document.getElementById(gameData.moneyID).innerHTML = "$" + gameData.moneyString
 }
 
 function RefreshInterface() {
