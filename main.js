@@ -17,7 +17,9 @@ var gameData = {
         return perTick
     },
     // Number of game ticks per second
-    tickSpeed: 2
+    tickSpeed: 2,
+    // How often the display refreshes per second
+    frameRate: 5
 }
 
 class Buyable {
@@ -29,6 +31,7 @@ class Buyable {
        this.label = label
        this.description = description
    }
+
 }
 
 class Producer {
@@ -103,6 +106,14 @@ class Upgrade {
         this.bought = false
     }
 
+    ButtonLabel() {
+        let label = this.title
+        if (this.bought == true) {
+            label += " (Bought)"
+        }
+        return label
+    }
+
     Buy() {
         //Only execute if there's enough money and this upgrade has never been bought before
         if (gameData.money >= this.cost && this.bought == false) {
@@ -117,7 +128,7 @@ class Upgrade {
     }
 
     UpdateInfo(){
-        document.getElementById(this.ID).innerHTML = this.title
+        document.getElementById(this.ID).innerHTML = this.ButtonLabel()
         document.getElementById(this.ID).title = this.description
     }
 
@@ -131,7 +142,7 @@ pruningShears = new Upgrade("pruningShears","Pruning Shears","Makes Money Bushes
 huggingTrees = new Upgrade("huggingTrees","Hugging Trees","Makes Money Trees 10% more productive",true,400,function(){moneyTree.perTick*=1.1})
 
 var producerList = [moneyFlower,moneyBush,moneyTree]
-var upgradeList = [ughBees,pruningShears]
+var upgradeList = [ughBees,pruningShears,huggingTrees]
 
 function PickMoney() {
     // Add money per tick to the current money
@@ -166,7 +177,8 @@ function RefreshInterface() {
     }
 }
 
-var mainGameLoop = window.setInterval(function() {
-    PickMoney()
-    RefreshInterface()
-}, 1000/gameData.tickSpeed)
+// Refreshes display of everything on the screen
+var RefreshScreen = window.setInterval(function() {RefreshInterface()},1000/gameData.frameRate)
+
+// Main loop that collects money
+var mainGameLoop = window.setInterval(function() {PickMoney()}, 1000/gameData.tickSpeed)
