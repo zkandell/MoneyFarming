@@ -25,6 +25,7 @@ var gameData = {
 class Buyable {
     /* Parent of the Producer/Upgrade classes
     This defines an item that displays dynamic text and can be bought
+    ...Yeah, I never got around to finishing this, but it's an idea to pick up next time
     */
    constructor(ID,label,description){
        this.ID = ID
@@ -108,9 +109,7 @@ class Upgrade {
 
     ButtonLabel() {
         let label = this.title
-        if (this.bought == true) {
-            label += " (Bought)"
-        }
+        if (this.bought == true) {label += " (Bought)"}
         return label
     }
 
@@ -152,7 +151,6 @@ function PickMoney() {
 
 function FormatMoney(money) {
     // Convert the current amount of money to a string rather than number
-    // This is kind of useless right now, but this function will change later
     let moneyString = money.toFixed(2)
     return moneyString
 }
@@ -176,6 +174,7 @@ function RefreshInterface() {
         upgrade.UpdateInfo()
     }
     if (gameData.money >= 100000){
+        // Show the self-deprecating message when the player has too much money
         document.getElementById("Message").style.display = 'block'
     }
 }
