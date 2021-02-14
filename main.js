@@ -175,6 +175,9 @@ function RefreshInterface() {
         upgrade = upgradeList[i]
         upgrade.UpdateInfo()
     }
+    if (gameData.money >= 100000){
+        document.getElementById("Message").style.display = 'block'
+    }
 }
 
 // Refreshes display of everything on the screen
