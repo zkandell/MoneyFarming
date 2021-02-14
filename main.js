@@ -15,7 +15,20 @@ var gameData = {
             perTick += producer.perTick * producer.quantity
         }
         return perTick
-    }
+    },
+    // Number of game ticks per second
+    tickSpeed: 2
+}
+
+class Buyable {
+    /* Parent of the Producer/Upgrade classes
+    This defines an item that displays dynamic text and can be bought
+    */
+   constructor(ID,label,description){
+       this.ID = ID
+       this.label = label
+       this.description = description
+   }
 }
 
 class Producer {
@@ -43,7 +56,7 @@ class Producer {
 
     ButtonLabel(){return "Buy " + this.name + " (currently " + this.quantity + ") Cost: $" + this.cost}
 
-    AltText(){return "Produces $" + this.perTick + " per second"}
+    AltText(){return "Produces $" + FormatMoney(this.perTick) + " per second"}
     
     UpdateInfo(){
         // Calculates how much the next producer will cost
@@ -156,4 +169,4 @@ function RefreshInterface() {
 var mainGameLoop = window.setInterval(function() {
     PickMoney()
     RefreshInterface()
-}, 1000)
+}, 1000/gameData.tickSpeed)
