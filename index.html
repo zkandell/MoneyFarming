@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="interface.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Money Farming</title>
 </head>
 <body>
-    <p id ="CurrentMoney">$10</p>
-    <button onclick="PickMoney()">Find Money</button><br>
-    <h2>Producers</h2>
-    <button onclick="moneyFlower.Buy()" id="MoneyFlower">Buy Money Flower (currently 0) Cost: $10</button><br>
-    <button onclick="moneyBush.Buy()" id="MoneyBush">Buy Money Bush (currently 0) Cost: $20</button><br>
-    <button onclick="moneyTree.Buy()" id="MoneyTree">Buy Money Tree (currently 0) Cost: $40</button><br>
-    <h2>Upgrades</h2>
-    <button onclick="ughBees.Buy()" id="ughBees">Ugh, bees</button><br>
-    <button onclick="pruningShears.Buy()" id="pruningShears">Pruning Shears</button>
-    <!--<button onclick="LowerMoneyTreeScale()" id="Test">Reduce Money Tree Scale</button>-->
+    <div id="Money">
+        <p id ="CurrentMoney">$10</p>
+        <button onclick="PickMoney()">Find Money</button><br>
+    </div>
+    <div id="Producers">
+        <h2>Producers</h2>
+        <button onclick="moneyFlower.Buy()" id="MoneyFlower">Buy Money Flower (currently 0) Cost: $10</button><br>
+        <button onclick="moneyBush.Buy()" id="MoneyBush">Buy Money Bush (currently 0) Cost: $20</button><br>
+        <button onclick="moneyTree.Buy()" id="MoneyTree">Buy Money Tree (currently 0) Cost: $40</button><br>
+    </div>
+    <div id="Upgrades">
+        <h2>Upgrades</h2>
+        <button onclick="ughBees.Buy()" id="ughBees">Ugh, bees</button><br>
+        <button onclick="pruningShears.Buy()" id="pruningShears">Pruning Shears</button>
+        <!--<button onclick="LowerMoneyTreeScale()" id="Test">Reduce Money Tree Scale</button>-->
+    </div>
     <script src ="main.js" charset="utf-8" type="text/javascript"></script>
 </body>
 </html>
