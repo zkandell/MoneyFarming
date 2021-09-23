@@ -46,7 +46,7 @@ class Producer {
         this.ID = ID
         // However many of it you start with
         this.quantity = quantity
-        // basecost is teh cost of the first producer and is used to calculate later ones
+        // basecost is the cost of the first producer and is used to calculate later ones
         this.baseCost = baseCost
         this.cost = this.baseCost
         // Scale is how quickly it will go up in price (scale plus one raised to the power of quantity)
